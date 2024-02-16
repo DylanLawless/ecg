@@ -342,3 +342,10 @@ To analyze HRV, we introduce variability in the simulated RR intervals:
 For our case/control study, we simulate groups with different HRV characteristics:
 
 - **`simulate_rr_intervals_group`**: Generates RR intervals for a specified group, incorporating baseline RR intervals and variability, useful for simulating control and case groups in our analysis.
+
+### README
+Finally, automatically convert this document to the GitHub project level README. 
+
+```{r}
+file.copy("ecg_vcurrent.md", "README.md", overwrite = TRUE)
+```

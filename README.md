@@ -228,8 +228,8 @@ head(hrv_summary)
     ## # A tibble: 2 × 4
     ##   Group   Mean_RR   SDNN  RMSSD
     ##   <chr>     <dbl>  <dbl>  <dbl>
-    ## 1 Case      0.805 0.0846 0.120 
-    ## 2 Control   0.797 0.0303 0.0390
+    ## 1 Case      0.806 0.0883 0.128 
+    ## 2 Control   0.802 0.0289 0.0405
 
 - Plot HRV data showing RR interval variability between groups
 
@@ -280,7 +280,7 @@ print(shapiro_test_control)
     ##  Shapiro-Wilk normality test
     ## 
     ## data:  hrv_data$RR_Interval[hrv_data$Group == "Control"]
-    ## W = 0.941, p-value = 0.0002219
+    ## W = 0.9514, p-value = 0.001027
 
 ``` r
 print(shapiro_test_case)
@@ -290,7 +290,7 @@ print(shapiro_test_case)
     ##  Shapiro-Wilk normality test
     ## 
     ## data:  hrv_data$RR_Interval[hrv_data$Group == "Case"]
-    ## W = 0.95213, p-value = 0.001149
+    ## W = 0.94141, p-value = 0.0002353
 
 - Decision on statistical test based on normality assessment
 - If normality is not rejected, use t-test; otherwise, consider
@@ -307,13 +307,13 @@ print(t_test_result)
     ##  Welch Two Sample t-test
     ## 
     ## data:  RR_Interval by Group
-    ## t = 0.91009, df = 123.96, p-value = 0.3645
+    ## t = 0.44795, df = 120.02, p-value = 0.655
     ## alternative hypothesis: true difference in means between group Case and group Control is not equal to 0
     ## 95 percent confidence interval:
-    ##  -0.00960885  0.02596676
+    ##  -0.01423971  0.02256698
     ## sample estimates:
     ##    mean in group Case mean in group Control 
-    ##              0.805388              0.797209
+    ##             0.8061329             0.8019692
 
 ## Covariate data
 
@@ -335,12 +335,12 @@ head(hrv_data)
 ```
 
     ##   RR_Interval   Group Sample Age_day Sex Treatment
-    ## 1   0.7783174 Control      1      30   1         b
-    ## 2   0.7554708 Control      2      14   1         a
-    ## 3   0.7506087 Control      3      50   1         b
-    ## 4   0.8044246 Control      4      13   0         b
-    ## 5   0.7518773 Control      5       2   0         b
-    ## 6   0.7539838 Control      6      41   1         a
+    ## 1   0.8279636 Control      1      30   1         b
+    ## 2   0.8143300 Control      2      14   1         a
+    ## 3   0.8198734 Control      3      50   1         b
+    ## 4   0.7569344 Control      4      13   0         b
+    ## 5   0.7981791 Control      5       2   0         b
+    ## 6   0.7765258 Control      6      41   1         a
 
 ## Gneralised linear model (GLM)
 
@@ -367,24 +367,24 @@ summary(glm_model)
     ## 
     ## Deviance Residuals: 
     ##       Min         1Q     Median         3Q        Max  
-    ## -0.157205  -0.035246  -0.001313   0.039479   0.152591  
+    ## -0.149301  -0.037208   0.001471   0.037208   0.144497  
     ## 
     ## Coefficients:
     ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   0.8067797  0.0134984  59.768   <2e-16 ***
-    ## GroupControl -0.0068526  0.0091845  -0.746    0.457    
-    ## Age_day      -0.0001670  0.0002813  -0.593    0.554    
-    ## Sex1         -0.0076720  0.0092177  -0.832    0.406    
-    ## Treatmentb    0.0087743  0.0115372   0.761    0.448    
-    ## Treatmentc    0.0083698  0.0116025   0.721    0.472    
+    ## (Intercept)   0.8011963  0.0139504  57.432   <2e-16 ***
+    ## GroupControl -0.0052675  0.0094920  -0.555    0.580    
+    ## Age_day       0.0000699  0.0002907   0.240    0.810    
+    ## Sex1          0.0130778  0.0095263   1.373    0.171    
+    ## Treatmentb   -0.0036929  0.0119235  -0.310    0.757    
+    ## Treatmentc   -0.0025624  0.0119909  -0.214    0.831    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## (Dispersion parameter for gaussian family taken to be 0.00408141)
+    ## (Dispersion parameter for gaussian family taken to be 0.00435928)
     ## 
-    ##     Null deviance: 0.80293  on 199  degrees of freedom
-    ## Residual deviance: 0.79179  on 194  degrees of freedom
-    ## AIC: -524.78
+    ##     Null deviance: 0.85619  on 199  degrees of freedom
+    ## Residual deviance: 0.84570  on 194  degrees of freedom
+    ## AIC: -511.61
     ## 
     ## Number of Fisher Scoring iterations: 2
 
@@ -498,14 +498,3 @@ characteristics:
 - **`simulate_rr_intervals_group`**: Generates RR intervals for a
   specified group, incorporating baseline RR intervals and variability,
   useful for simulating control and case groups in our analysis.
-
-### README
-
-Finally, automatically convert this document to the GitHub project level
-README.
-
-``` r
-file.copy("ecg_vcurrent.md", "README.md", overwrite = TRUE)
-```
-
-    ## [1] TRUE
