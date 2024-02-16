@@ -8,6 +8,8 @@ date: "2024-02-16"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+![](images/ecg.jpg)<!-- -->
+
 ## Introduction
 ### ECG waveform simulation and analysis
 

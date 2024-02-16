@@ -2,6 +2,8 @@ ECG
 ================
 2024-02-16
 
+![](images/ecg.jpg)<!-- -->
+
 ## Introduction
 
 ### ECG waveform simulation and analysis
@@ -228,8 +230,8 @@ head(hrv_summary)
     ## # A tibble: 2 × 4
     ##   Group   Mean_RR   SDNN  RMSSD
     ##   <chr>     <dbl>  <dbl>  <dbl>
-    ## 1 Case      0.813 0.0890 0.124 
-    ## 2 Control   0.801 0.0286 0.0426
+    ## 1 Case      0.808 0.0901 0.135 
+    ## 2 Control   0.800 0.0306 0.0423
 
 - Plot HRV data showing RR interval variability between groups
 
@@ -280,7 +282,7 @@ print(shapiro_test_control)
     ##  Shapiro-Wilk normality test
     ## 
     ## data:  hrv_data$RR_Interval[hrv_data$Group == "Control"]
-    ## W = 0.95888, p-value = 0.003348
+    ## W = 0.94082, p-value = 0.0002163
 
 ``` r
 print(shapiro_test_case)
@@ -290,7 +292,7 @@ print(shapiro_test_case)
     ##  Shapiro-Wilk normality test
     ## 
     ## data:  hrv_data$RR_Interval[hrv_data$Group == "Case"]
-    ## W = 0.93822, p-value = 0.0001503
+    ## W = 0.93559, p-value = 0.0001048
 
 - Decision on statistical test based on normality assessment
 - If normality is not rejected, use t-test; otherwise, consider
@@ -307,13 +309,13 @@ print(t_test_result)
     ##  Welch Two Sample t-test
     ## 
     ## data:  RR_Interval by Group
-    ## t = 1.2967, df = 119.3, p-value = 0.1973
+    ## t = 0.8715, df = 121.53, p-value = 0.3852
     ## alternative hypothesis: true difference in means between group Case and group Control is not equal to 0
     ## 95 percent confidence interval:
-    ##  -0.006386551  0.030622218
+    ##  -0.01055037  0.02714454
     ## sample estimates:
     ##    mean in group Case mean in group Control 
-    ##             0.8127424             0.8006246
+    ##             0.8084336             0.8001365
 
 ## Generalised linear model (GLM)
 
@@ -385,12 +387,12 @@ head(hrv_data)
 ```
 
     ##   RR_Interval   Group Sample Age_day Sex Treatment
-    ## 1   0.8151302 Control      1      30   1         b
-    ## 2   0.8243805 Control      2      14   1         a
-    ## 3   0.8071691 Control      3      50   1         b
-    ## 4   0.7806285 Control      4      13   0         b
-    ## 5   0.7576811 Control      5       2   0         b
-    ## 6   0.8473233 Control      6      41   1         a
+    ## 1   0.7742978 Control      1      30   1         b
+    ## 2   0.7938344 Control      2      14   1         a
+    ## 3   0.8480075 Control      3      50   1         b
+    ## 4   0.7611492 Control      4      13   0         b
+    ## 5   0.7843837 Control      5       2   0         b
+    ## 6   0.7632358 Control      6      41   1         a
 
 ``` r
 # Convert necessary factors
@@ -415,24 +417,24 @@ summary(glm_model)
     ## 
     ## Deviance Residuals: 
     ##       Min         1Q     Median         3Q        Max  
-    ## -0.167350  -0.032757   0.000275   0.043047   0.147108  
+    ## -0.156667  -0.035937   0.006798   0.039084   0.147207  
     ## 
     ## Coefficients:
     ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   0.7950930  0.0138777  57.293   <2e-16 ***
-    ## GroupControl -0.0084690  0.0094426  -0.897   0.3709    
-    ## Age_day       0.0002512  0.0002892   0.869   0.3861    
-    ## Sex1         -0.0007963  0.0094767  -0.084   0.9331    
-    ## Treatmentb    0.0009396  0.0118614   0.079   0.9369    
-    ## Treatmentc    0.0230487  0.0119285   1.932   0.0548 .  
+    ## (Intercept)   0.7999151  0.0142399  56.174   <2e-16 ***
+    ## GroupControl -0.0086322  0.0096890  -0.891    0.374    
+    ## Age_day       0.0004314  0.0002968   1.453    0.148    
+    ## Sex1         -0.0077469  0.0097240  -0.797    0.427    
+    ## Treatmentb    0.0047564  0.0121710   0.391    0.696    
+    ## Treatmentc   -0.0065654  0.0122398  -0.536    0.592    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## (Dispersion parameter for gaussian family taken to be 0.004314023)
+    ## (Dispersion parameter for gaussian family taken to be 0.004542105)
     ## 
-    ##     Null deviance: 0.87198  on 199  degrees of freedom
-    ## Residual deviance: 0.83692  on 194  degrees of freedom
-    ## AIC: -513.69
+    ##     Null deviance: 0.90077  on 199  degrees of freedom
+    ## Residual deviance: 0.88117  on 194  degrees of freedom
+    ## AIC: -503.39
     ## 
     ## Number of Fisher Scoring iterations: 2
 
