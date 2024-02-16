@@ -1,0 +1,212 @@
+ECG
+================
+2024-02-16
+
+Note that the `echo = FALSE` parameter was added to the code chunk to
+prevent printing of the R code that generated the plot.
+
+# Load custom ECG simulation functions
+
+``` r
+source("./ecg_functions.R")
+library(ggplot2)
+```
+
+# illustration —-
+
+# Initial setup for ECG waveform simulation
+
+# Define the total number of heartbeats and other parameters for ECG simulation
+
+# Assuming ecg_data is already created
+
+``` r
+T <- 3  # Total heart beats
+P1 <- 0.5  # Starting value for the logistic map
+r <- 3.0  # Logistic map parameter
+cons <- 0.0  # Constant added to logistic map output
+SAMPLING_RATE <- 125  # Sampling rate for the ECG in Hz
+```
+
+# Simulate ECG data
+
+# Generate P vector using logistic map
+
+``` r
+P <- numeric(T)
+P[1] <- P1
+for (i in 2:T) {
+  P[i] <- r * P[i - 1] * (1 - P[i - 1])
+}
+P <- P + cons
+```
+
+<!-- # Convert P vector to Q vector and simulate ECG waveform -->
+<!-- Q <- cumsum(P) -->
+<!-- ecg <- fit_ecg_waves_to_beats(Q, sampling_rate=SAMPLING_RATE) -->
+<!-- t <- seq_along(ecg) / SAMPLING_RATE -->
+<!-- # Plot simulated ECG waveform -->
+<!-- ecg_data <- data.frame(Time = t, ECG = ecg) -->
+<!-- # Step 1: Detect Peaks - Find local maxima -->
+<!-- # A simple approach to find local maxima (peaks) -->
+<!-- find_peaks <- function(ecg_data) { -->
+<!--   peaks <- which(diff(sign(diff(ecg_data$ECG))) == -2) + 1 -->
+<!--   peak_data <- ecg_data[peaks, ] -->
+<!--   return(peak_data) -->
+<!-- } -->
+<!-- peak_data <- find_peaks(ecg_data) -->
+<!-- # Step 2: Filter Peaks by Separation - Ensure they are at least 0.4s apart -->
+<!-- # Sort peaks by amplitude to get the highest peaks first -->
+<!-- sorted_peaks <- peak_data[order(-peak_data$ECG), ] -->
+<!-- filtered_peaks <- sorted_peaks[1, ]  # Initialize with the highest peak -->
+<!-- for (i in 2:nrow(sorted_peaks)) { -->
+<!--   if (all(abs(filtered_peaks$Time - sorted_peaks$Time[i]) >= 0.4)) { -->
+<!--     filtered_peaks <- rbind(filtered_peaks, sorted_peaks[i, ]) -->
+<!--     if (nrow(filtered_peaks) == 2) break  # Stop after finding the second peak -->
+<!--   } -->
+<!-- } -->
+<!-- # Step 3: Plot and Annotate the ECG waveform with R peaks -->
+<!-- p <- ggplot(ecg_data, aes(x = Time, y = ECG)) + -->
+<!--   geom_line() + -->
+<!--   geom_point(data = filtered_peaks, aes(x = Time, y = ECG), color = "red", size = 3) + -->
+<!--   geom_text(data = filtered_peaks, aes(x = Time, y = ECG, label = "R"), vjust = -2, color = "red") + -->
+<!--   labs(title = "Simulated ECG Waveform with R Peak detection", x = "Time (s)", y = "Amplitude (mV)") + -->
+<!--   theme_minimal() -->
+<!-- print(p) -->
+<!-- # Calculate the time difference between the two peaks -->
+<!-- if (nrow(filtered_peaks) >= 2) { -->
+<!--   time_diff <- diff(filtered_peaks$Time) -->
+<!--   time_diff_label <- paste(round(time_diff, 2), "s") -->
+<!--   # Coordinates for annotation placement -->
+<!--   x_midpoint <- sum(filtered_peaks$Time) / 2 -->
+<!--   y_max <- max(ecg_data$ECG) * 1.1 -->
+<!--   # Add a line connecting the two peaks and annotate it with the time difference -->
+<!--   p <- p + geom_segment(aes(x = filtered_peaks$Time[1], y = max(ecg_data$ECG),  -->
+<!--                             xend = filtered_peaks$Time[2], yend = max(ecg_data$ECG)),  -->
+<!--                         linetype = "dashed", color = "blue") + -->
+<!--     annotate("text", x = x_midpoint, y = y_max, label = time_diff_label, color = "blue") -->
+<!-- } -->
+<!-- print(p) -->
+<!-- # Initial setup for ECG waveform simulation -->
+<!-- # Define the total number of heartbeats and other parameters for ECG simulation -->
+<!-- T <- 20  # Total heart beats -->
+<!-- P1 <- 0.5  # Starting value for the logistic map -->
+<!-- r <- 3.0  # Logistic map parameter -->
+<!-- cons <- 0.0  # Constant added to logistic map output -->
+<!-- SAMPLING_RATE <- 125  # Sampling rate for the ECG in Hz -->
+<!-- # Simulate ECG data -->
+<!-- # Generate P vector using logistic map -->
+<!-- P <- numeric(T) -->
+<!-- P[1] <- P1 -->
+<!-- for (i in 2:T) { -->
+<!--   P[i] <- r * P[i - 1] * (1 - P[i - 1]) -->
+<!-- } -->
+<!-- P <- P + cons -->
+<!-- # Convert P vector to Q vector and simulate ECG waveform -->
+<!-- Q <- cumsum(P) -->
+<!-- ecg <- fit_ecg_waves_to_beats(Q, sampling_rate=SAMPLING_RATE) -->
+<!-- t <- seq_along(ecg) / SAMPLING_RATE -->
+<!-- # Plot simulated ECG waveform -->
+<!-- ecg_data <- data.frame(Time = t, ECG = ecg) -->
+<!-- ggplot(ecg_data, aes(x = Time, y = ECG)) + -->
+<!--   geom_line() + -->
+<!--   labs(title = "Simulated ECG Waveform", x = "Time (s)", y = "Amplitude (mV)") + -->
+<!--   theme_minimal() -->
+<!-- # Simulate HRV data for case/control study -->
+<!-- # Simulate RR intervals with variability for two groups: control and case -->
+<!-- N <- 100  # Number of RR intervals per group -->
+<!-- control_rr <- simulate_rr_intervals_group(N, 0.8, 0.05, "Control") -->
+<!-- case_rr <- simulate_rr_intervals_group(N, 0.8, 0.15, "Case") -->
+<!-- hrv_data <- rbind(control_rr, case_rr) -->
+<!-- # Summarize HRV metrics for each group -->
+<!-- hrv_summary <- hrv_data %>% -->
+<!--   group_by(Group) %>% -->
+<!--   summarise(Mean_RR = mean(RR_Interval), -->
+<!--             SDNN = sd(RR_Interval), -->
+<!--             RMSSD = sqrt(mean(diff(RR_Interval)^2))) -->
+<!-- # Plot HRV data showing RR interval variability between groups -->
+<!-- ggplot(hrv_data, aes(x = Group, y = RR_Interval)) + -->
+<!--   geom_boxplot() + -->
+<!--   geom_jitter(alpha = 0.5, width = 0.3, height = 0) + -->
+<!--   labs(title = "RR Interval Variability by Group", x = "Group", y = "RR Interval (s)") + -->
+<!--   theme_minimal() -->
+<!-- # Assess distribution of RR intervals for normality -->
+<!-- # Plot histograms and Q-Q plots for visual inspection -->
+<!-- ggplot(hrv_data, aes(x = RR_Interval, fill = Group)) + -->
+<!--   geom_histogram(bins = 30, alpha = 0.6) + -->
+<!--   facet_wrap(~Group) + -->
+<!--   labs(title = "Distribution of RR Intervals by Group", x = "RR Interval (s)", y = "Count") + -->
+<!--   theme_minimal() -->
+<!-- # Q-Q plots for Control and Case groups using ggplot2 -->
+<!-- ggplot(hrv_data, aes(sample = RR_Interval)) + -->
+<!--   stat_qq() + -->
+<!--   stat_qq_line() + -->
+<!--   ggtitle("Q-Q Plot for Control Group") + -->
+<!--   theme_minimal() + -->
+<!--   facet_grid(.~Group, scales="free") -->
+<!-- # Perform Shapiro-Wilk test for normality -->
+<!-- shapiro_test_control <- shapiro.test(hrv_data$RR_Interval[hrv_data$Group == "Control"]) -->
+<!-- shapiro_test_case <- shapiro.test(hrv_data$RR_Interval[hrv_data$Group == "Case"]) -->
+<!-- print(shapiro_test_control) -->
+<!-- print(shapiro_test_case) -->
+<!-- # Decision on statistical test based on normality assessment -->
+<!-- # If normality is not rejected, use t-test; otherwise, consider Mann-Whitney U test. -->
+<!-- # Example of performing a t-test (replace with Mann-Whitney U test if necessary) -->
+<!-- t_test_result <- t.test(RR_Interval ~ Group, data=hrv_data) -->
+<!-- print(t_test_result) -->
+<!-- # Covariate data ---- -->
+<!-- set.seed(123)  # For reproducibility -->
+<!-- # Simulating covariate data -->
+<!-- covariate_data <- data.frame( -->
+<!--   Sample = 1:(2*N),  # Assuming N samples per group as before -->
+<!--   Age_day = sample(0:60, 2*N, replace = TRUE), -->
+<!--   Sex = sample(0:1, 2*N, replace = TRUE), -->
+<!--   Treatment = sample(c("a", "b", "c"), 2*N, replace = TRUE) -->
+<!-- ) -->
+<!-- # Combine with HRV data -->
+<!-- hrv_data <- cbind(hrv_data, covariate_data) -->
+<!-- head(hrv_data) -->
+<!-- # GLM ---- -->
+<!-- # Convert necessary factors -->
+<!-- hrv_data$Group <- as.factor(hrv_data$Group) -->
+<!-- hrv_data$Sex <- as.factor(hrv_data$Sex) -->
+<!-- hrv_data$Treatment <- as.factor(hrv_data$Treatment) -->
+<!-- # Fit GLM model -->
+<!-- glm_model <- glm(RR_Interval ~ Group + Age_day + Sex + Treatment, data = hrv_data, family = gaussian()) -->
+<!-- # Summary of GLM results -->
+<!-- summary(glm_model) -->
+<!-- # Predicted vs. Actual RR Intervals Plot -->
+<!-- # This plot shows the relationship between the actual RR intervals and the predicted RR intervals from the GLM, providing insight into the model's accuracy. -->
+<!-- # Calculate predicted values -->
+<!-- hrv_data$Predicted_RR <- predict(glm_model, type = "response") -->
+<!-- # Plot of Actual vs. Predicted RR Intervals -->
+<!-- ggplot(hrv_data, aes(x = Predicted_RR, y = RR_Interval)) + -->
+<!--   geom_point(aes(color = Group), alpha = 0.6) + -->
+<!--   geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") + -->
+<!--   labs(title = "Actual vs. Predicted RR Intervals", x = "Predicted RR Interval (s)", y = "Actual RR Interval (s)") + -->
+<!--   theme_minimal() -->
+<!-- # Residuals Plot -->
+<!-- # This plot examines the residuals (differences between actual and predicted values) to check for any systematic patterns that might suggest inadequacies in the model. -->
+<!-- # Calculate residuals -->
+<!-- hrv_data$Residuals <- residuals(glm_model) -->
+<!-- # Residuals Plot -->
+<!-- ggplot(hrv_data, aes(x = Predicted_RR, y = Residuals)) + -->
+<!--   geom_hline(yintercept = 0, linetype = "dashed", color = "red") + -->
+<!--   geom_point(aes(color = Group), alpha = 0.6) + -->
+<!--   labs(title = "Residuals vs. Predicted RR Intervals", x = "Predicted RR Interval (s)", y = "Residuals") + -->
+<!--   theme_minimal() -->
+<!-- # Effect Plot for a Single Covariate -->
+<!-- # To illustrate the effect of a single covariate while holding others constant, you can create a plot for one covariate at a time. Here's an example for Age: -->
+<!-- # Assuming 'Age' is a continuous variable in your model -->
+<!-- ggplot(hrv_data, aes(x = Age_day, y = RR_Interval)) + -->
+<!--   geom_point(aes(color = Group), alpha = 0.6) + -->
+<!--   geom_smooth(method = "glm", method.args = list(family = "gaussian"), formula = y ~ x, aes(group = Group, color = Group)) + -->
+<!--   labs(title = "Effect of Age on RR Interval", x = "Age (days)", y = "RR Interval (s)") + -->
+<!--   theme_minimal() -->
+<!-- # Visualize effects of Group and Covariates on RR Interval -->
+<!-- ggplot(hrv_data, aes(x = Group, y = RR_Interval, color = Group)) + -->
+<!--   geom_boxplot() + -->
+<!--   geom_point() + -->
+<!--   facet_wrap(~Sex + Treatment, scales = "free_x") + -->
+<!--   labs(title = "RR Interval Variability by Group with Covariates\n(sex 0/1, treatments a,b,c)", x = "Group", y = "RR Interval (s)") + -->
+<!--   theme_minimal() -->
