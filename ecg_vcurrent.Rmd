@@ -230,6 +230,23 @@ t_test_result <- t.test(RR_Interval ~ Group, data=hrv_data)
 print(t_test_result)
 ```
 
+##  Generalised linear model (GLM)
+
+In this section of our analysis, we employ a Generalized Linear Model (GLM) as a more sophisticated approach to analyzing our data, as opposed to relying solely on a t-test. The example of GLM framework is chosen for several reasons:
+
+1. **Incorporation of Multiple Covariates**: Unlike the t-test, which is limited to comparing means between two groups, GLM allows us to account for the influence of multiple covariates simultaneously. This is crucial in our study, as we're interested in understanding how factors such as age (`Age_day`), sex (`Sex`), and treatment type (`Treatment`) might impact Heart Rate Variability (HRV), alongside the primary variable of interest (Group).
+
+2. **Flexibility in Modeling Different Types of Data**: GLM extends the general linear model to allow for response variables that have error distribution models other than a normal distribution. This makes it suitable for a wide range of data types and link functions, providing a more accurate analysis that aligns with the underlying data distribution.
+
+3. **Ability to Handle Non-linear Relationships**: Through the use of link functions, GLMs can model relationships between the predictor and response variables that are not necessarily linear. This capability is particularly important in biomedical data, where many relationships are complex and non-linear.
+
+4. **Direct Estimation of Effect Size and Significance**: GLMs provide direct estimates of the effect size for each covariate, including confidence intervals and p-values, making it easier to interpret the impact of each factor on the response variable. This comprehensive insight is invaluable in discerning not just if there is an effect, but how strong that effect is, and how confidently we can assert its presence.
+
+5. **Improved Precision and Power**: By adjusting for additional covariates that might influence the response variable, GLMs can reduce unexplained variability in the data. This leads to more precise estimates of the effects of interest and potentially increases the statistical power of the analysis.
+
+By leveraging a GLM, we're not just comparing group means; we're constructing a more nuanced understanding of how various factors contribute to differences in RR intervals, providing a deeper insight into the dynamics of heart rate variability. This approach allows us to make more informed conclusions about the data, supported by a robust statistical framework that accounts for the multifaceted nature of biological phenomena.
+
+
 ## Covariate data
 * Simulating covariate data
 ```{r}
@@ -246,8 +263,6 @@ covariate_data <- data.frame(
 hrv_data <- cbind(hrv_data, covariate_data)
 head(hrv_data)
 ```
-
-##  Gneralised linear model (GLM)
 
 ```{r}
 # Convert necessary factors

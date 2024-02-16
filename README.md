@@ -228,8 +228,8 @@ head(hrv_summary)
     ## # A tibble: 2 × 4
     ##   Group   Mean_RR   SDNN  RMSSD
     ##   <chr>     <dbl>  <dbl>  <dbl>
-    ## 1 Case      0.806 0.0883 0.128 
-    ## 2 Control   0.802 0.0289 0.0405
+    ## 1 Case      0.813 0.0890 0.124 
+    ## 2 Control   0.801 0.0286 0.0426
 
 - Plot HRV data showing RR interval variability between groups
 
@@ -280,7 +280,7 @@ print(shapiro_test_control)
     ##  Shapiro-Wilk normality test
     ## 
     ## data:  hrv_data$RR_Interval[hrv_data$Group == "Control"]
-    ## W = 0.9514, p-value = 0.001027
+    ## W = 0.95888, p-value = 0.003348
 
 ``` r
 print(shapiro_test_case)
@@ -290,7 +290,7 @@ print(shapiro_test_case)
     ##  Shapiro-Wilk normality test
     ## 
     ## data:  hrv_data$RR_Interval[hrv_data$Group == "Case"]
-    ## W = 0.94141, p-value = 0.0002353
+    ## W = 0.93822, p-value = 0.0001503
 
 - Decision on statistical test based on normality assessment
 - If normality is not rejected, use t-test; otherwise, consider
@@ -307,13 +307,63 @@ print(t_test_result)
     ##  Welch Two Sample t-test
     ## 
     ## data:  RR_Interval by Group
-    ## t = 0.44795, df = 120.02, p-value = 0.655
+    ## t = 1.2967, df = 119.3, p-value = 0.1973
     ## alternative hypothesis: true difference in means between group Case and group Control is not equal to 0
     ## 95 percent confidence interval:
-    ##  -0.01423971  0.02256698
+    ##  -0.006386551  0.030622218
     ## sample estimates:
     ##    mean in group Case mean in group Control 
-    ##             0.8061329             0.8019692
+    ##             0.8127424             0.8006246
+
+## Generalised linear model (GLM)
+
+In this section of our analysis, we employ a Generalized Linear Model
+(GLM) as a more sophisticated approach to analyzing our data, as opposed
+to relying solely on a t-test. The example of GLM framework is chosen
+for several reasons:
+
+1.  **Incorporation of Multiple Covariates**: Unlike the t-test, which
+    is limited to comparing means between two groups, GLM allows us to
+    account for the influence of multiple covariates simultaneously.
+    This is crucial in our study, as we’re interested in understanding
+    how factors such as age (`Age_day`), sex (`Sex`), and treatment type
+    (`Treatment`) might impact Heart Rate Variability (HRV), alongside
+    the primary variable of interest (Group).
+
+2.  **Flexibility in Modeling Different Types of Data**: GLM extends the
+    general linear model to allow for response variables that have error
+    distribution models other than a normal distribution. This makes it
+    suitable for a wide range of data types and link functions,
+    providing a more accurate analysis that aligns with the underlying
+    data distribution.
+
+3.  **Ability to Handle Non-linear Relationships**: Through the use of
+    link functions, GLMs can model relationships between the predictor
+    and response variables that are not necessarily linear. This
+    capability is particularly important in biomedical data, where many
+    relationships are complex and non-linear.
+
+4.  **Direct Estimation of Effect Size and Significance**: GLMs provide
+    direct estimates of the effect size for each covariate, including
+    confidence intervals and p-values, making it easier to interpret the
+    impact of each factor on the response variable. This comprehensive
+    insight is invaluable in discerning not just if there is an effect,
+    but how strong that effect is, and how confidently we can assert its
+    presence.
+
+5.  **Improved Precision and Power**: By adjusting for additional
+    covariates that might influence the response variable, GLMs can
+    reduce unexplained variability in the data. This leads to more
+    precise estimates of the effects of interest and potentially
+    increases the statistical power of the analysis.
+
+By leveraging a GLM, we’re not just comparing group means; we’re
+constructing a more nuanced understanding of how various factors
+contribute to differences in RR intervals, providing a deeper insight
+into the dynamics of heart rate variability. This approach allows us to
+make more informed conclusions about the data, supported by a robust
+statistical framework that accounts for the multifaceted nature of
+biological phenomena.
 
 ## Covariate data
 
@@ -335,14 +385,12 @@ head(hrv_data)
 ```
 
     ##   RR_Interval   Group Sample Age_day Sex Treatment
-    ## 1   0.8279636 Control      1      30   1         b
-    ## 2   0.8143300 Control      2      14   1         a
-    ## 3   0.8198734 Control      3      50   1         b
-    ## 4   0.7569344 Control      4      13   0         b
-    ## 5   0.7981791 Control      5       2   0         b
-    ## 6   0.7765258 Control      6      41   1         a
-
-## Gneralised linear model (GLM)
+    ## 1   0.8151302 Control      1      30   1         b
+    ## 2   0.8243805 Control      2      14   1         a
+    ## 3   0.8071691 Control      3      50   1         b
+    ## 4   0.7806285 Control      4      13   0         b
+    ## 5   0.7576811 Control      5       2   0         b
+    ## 6   0.8473233 Control      6      41   1         a
 
 ``` r
 # Convert necessary factors
@@ -367,24 +415,24 @@ summary(glm_model)
     ## 
     ## Deviance Residuals: 
     ##       Min         1Q     Median         3Q        Max  
-    ## -0.149301  -0.037208   0.001471   0.037208   0.144497  
+    ## -0.167350  -0.032757   0.000275   0.043047   0.147108  
     ## 
     ## Coefficients:
     ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   0.8011963  0.0139504  57.432   <2e-16 ***
-    ## GroupControl -0.0052675  0.0094920  -0.555    0.580    
-    ## Age_day       0.0000699  0.0002907   0.240    0.810    
-    ## Sex1          0.0130778  0.0095263   1.373    0.171    
-    ## Treatmentb   -0.0036929  0.0119235  -0.310    0.757    
-    ## Treatmentc   -0.0025624  0.0119909  -0.214    0.831    
+    ## (Intercept)   0.7950930  0.0138777  57.293   <2e-16 ***
+    ## GroupControl -0.0084690  0.0094426  -0.897   0.3709    
+    ## Age_day       0.0002512  0.0002892   0.869   0.3861    
+    ## Sex1         -0.0007963  0.0094767  -0.084   0.9331    
+    ## Treatmentb    0.0009396  0.0118614   0.079   0.9369    
+    ## Treatmentc    0.0230487  0.0119285   1.932   0.0548 .  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## (Dispersion parameter for gaussian family taken to be 0.00435928)
+    ## (Dispersion parameter for gaussian family taken to be 0.004314023)
     ## 
-    ##     Null deviance: 0.85619  on 199  degrees of freedom
-    ## Residual deviance: 0.84570  on 194  degrees of freedom
-    ## AIC: -511.61
+    ##     Null deviance: 0.87198  on 199  degrees of freedom
+    ## Residual deviance: 0.83692  on 194  degrees of freedom
+    ## AIC: -513.69
     ## 
     ## Number of Fisher Scoring iterations: 2
 
@@ -498,3 +546,14 @@ characteristics:
 - **`simulate_rr_intervals_group`**: Generates RR intervals for a
   specified group, incorporating baseline RR intervals and variability,
   useful for simulating control and case groups in our analysis.
+
+### README
+
+Finally, automatically convert this document to the GitHub project level
+README.
+
+``` r
+file.copy("ecg_vcurrent.md", "README.md", overwrite = TRUE)
+```
+
+    ## [1] TRUE
