@@ -11,12 +11,17 @@ ECG
 Example from
 **./ecg_process/ecg_process.R**:
 
-Raw data is very noise and has big outliers (large RR intervals).
-![](images/plot_hist.png)<!-- -->
-![](images/plot_point.png)<!-- -->
+**Raw data is very noise and has big outliers (large RR intervals).**
+<div style="display: flex; justify-content: space-between;">
+  <img src="images/plot_hist.png" style="width: 50%;" alt="Histogram of raw data"/>
+  <img src="images/plot_point.png" style="width: 50%;" alt="Point plot of raw data"/>
+</div>
 
-Use cleaning and clustering to detect the outliers
-![](images/plot_dbscan.png)<!-- -->
+**Use cleaning and clustering to detect the outliers**
+<div style="display: flex; justify-content: space-between;">
+  <img src="images/plot_dbscan.png" style="width: 50%;" alt="DBSCAN clustering plot"/>
+  <img src="images/plot_dbscan_hist.png" style="width: 50%;" alt="Histogram after DBSCAN"/>
+</div>
 
 ### ECG waveform simulation and analysis
 
