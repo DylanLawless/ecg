@@ -7,12 +7,16 @@ ECG
 ## Introduction
 
 ### ECG data processing
+
+Example from
+**./ecg_process/ecg_process.R**:
+
 Raw data is very noise and has big outliers (large RR intervals).
-![](images/plot_hist.pdf)<!-- -->
-![](images/plot_point.pdf)<!-- -->
+![](images/plot_hist.png)<!-- -->
+![](images/plot_point.png)<!-- -->
 
 Use cleaning and clustering to detect the outliers
-![](images/plot_dbscan.pdf)<!-- -->
+![](images/plot_dbscan.png)<!-- -->
 
 ### ECG waveform simulation and analysis
 
