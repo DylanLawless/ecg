@@ -1,31 +1,62 @@
 ECG
 ================
-2024-02-16
+
+* 2024-02-16
+* 2024-06-11
 
 ![](images/ecg.jpg)<!-- -->
 
+# ECG Data Processing
+
 ## Introduction
 
-### ECG data processing
+Here we apply a methodological approach used in processing ECG data, as detailed in `./ecg_process/ecg_process.R`. 
+Our process emphasizes the integrity of data handling, leveraging automated methods to ensure reproducibility and objectivity, particularly suitable for preparing data for subsequent statistical analysis.
 
-Example from
-**./ecg_process/ecg_process.R**:
+## Process Overview
 
-1. The raw input data:
-    * Raw data is very noise and has big outliers (large RR intervals).
+### 1. Initial Data Visualization
 
+Visualizing the data is the first critical step, allowing us to understand the inherent characteristics and identify obvious anomalies or noise. 
+This approach guides our subsequent data cleaning efforts, ensuring we base our decisions on empirical evidence rather than assumptions.
+
+**Initial Visual Assessment:**
 <div style="display: flex; justify-content: space-between;">
   <img src="images/plot_hist.png" style="width: 45%;" alt="Histogram of raw data"/>
   <img src="images/plot_point.png" style="width: 45%;" alt="Point plot of raw data"/>
 </div>
 
-2. Processed clustering and outlier filtering:
-    * Use cleaning and clustering to detect the outliers.
+### 2. Automated Data Cleaning and Clustering
 
+First we try to find the outlier thresholds using simple methods like interquartile range (IQR).
+This does not work for us, so we move to more advanced clustering algorithms like K-means, Z-score, DBSCAN.
+In our dataset DBSCAN works best, so we automatically segregate data into clusters to further identify and eliminate outliers and artifacts. 
+This method enhances the reliability of the dataset by minimizing manual intervention and potential bias.
+
+**Clustering and Outlier Detection:**
 <div style="display: flex; justify-content: space-between;">
   <img src="images/plot_dbscan.png" style="width: 45%;" alt="DBSCAN clustering plot"/>
   <img src="images/plot_dbscan_hist.png" style="width: 45%;" alt="Histogram after DBSCAN"/>
 </div>
+
+### 3. Data Integrity and Filtering
+
+By applying statistical thresholds derived from the data distribution itself, we automate the filtering of noise and outliers. 
+This step is crucial for maintaining data integrity, allowing the visualization to guide our interpretation and adjust our methods accordingly.
+
+**Refinement and Validation:**
+- Visualization of the cleaned data ensures the removal of artifacts while preserving true signals.
+- Continuous validation against the original data characteristics confirms that the cleaning process enhances data quality without distorting fundamental features.
+
+### 4. Preparation for Statistical Analysis
+
+The cleaned and validated dataset is now primed for robust statistical analysis, ensuring that any findings or conclusions drawn are based on high-quality data.
+
+## Conclusion
+
+The steps outlined here demonstrate our commitment to rigorous data processing, leveraging visualization not just for initial assessment but as an integral part of continuous validation throughout the cleaning process. For further details on the commands and specific methods used, please refer to the R script located at `./ecg_process/ecg_process.R`.
+
+# ECG Data Simulation
 
 ### ECG waveform simulation and analysis
 
