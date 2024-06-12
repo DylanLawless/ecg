@@ -56,18 +56,18 @@ p <- ggplot(df, aes(x = RR_value_ms)) +
   theme_minimal()
 
 p
-ggsave("../images/plot_hist.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_hist.png", plot = p) 
 
 
 # Points and Violin plot of RR_value_ms
-ggplot(df,  aes(x = "", y = RR_value_ms)) +
+p <- ggplot(df,  aes(x = "", y = RR_value_ms)) +
   geom_violin(trim=FALSE, fill="skyblue") +
   geom_point(stat = "identity", position = position_jitter(width = 0.1), alpha = 0.5) +
   labs(y = "RR Interval in ms", title = "Violin Plot with Points of RR_value_ms") +
   theme_minimal()
 
 p
-ggsave("../images/plot_point.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_point.png", plot = p) 
 
 
 # Filter the data based on the initial visual cutoff
@@ -86,7 +86,7 @@ p <- df_subset |> ggplot( aes(x = RR_value_ms)) +
   theme_minimal()
 
 p
-ggsave("../images/plot_iqr_hist.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_iqr_hist.png", plot = p) 
 
 
 # Points and Violin plot of RR_value_ms
@@ -97,7 +97,7 @@ p <- df_subset |> ggplot(  aes(x = "", y = RR_value_ms)) +
   theme_minimal()
 
 p
-ggsave("../images/plot_iqr_dot.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_iqr_dot.png", plot = p) 
 
 
 # Figure out cut-off ---
@@ -132,7 +132,7 @@ p <- df_subset |> ggplot(  aes(x = Patient_Number, y = RR_value_ms)) +
   geom_hline(aes(yintercept = lower_bound_refined), linetype = "dashed", color = "blue")
 
 p
-ggsave("../images/plot_iqr_dot_subject.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_iqr_dot_subject.png", plot = p) 
 
 
 # plot time course
@@ -143,7 +143,7 @@ p <- df_subset |> ggplot(  aes(x = Datetime, y = RR_value_ms)) +
   geom_hline(aes(yintercept = lower_bound_refined), linetype = "dashed", color = "blue")
 
 p
-ggsave("../images/plot_iqr_time.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_iqr_time.png", plot = p) 
 
 
 
@@ -159,7 +159,7 @@ p <- df_subset |>
   geom_hline(aes(yintercept = lower_bound_refined), linetype = "dashed", color = "blue")
 
 p
-ggsave("../images/plot_iqr_time_15min.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_iqr_time_15min.png", plot = p) 
 
 
   
@@ -183,7 +183,7 @@ p <- ggplot(df_subset, aes(x = Datetime, y = RR_value_ms)) +
   theme_minimal()
 
 p
-ggsave("../images/plot_zscore.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_zscore.png", plot = p) 
 
 
 # Percentile Thresholds method ----
@@ -200,7 +200,7 @@ p <- ggplot(df_subset, aes(x = Datetime, y = RR_value_ms)) +
   labs(title = "RR_value_ms with Percentile Thresholds") +
   theme_minimal()
 p
-ggsave("../images/plot_percentile.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_percentile.png", plot = p) 
 
 
 # KDE-Based Outlier Detection method ----
@@ -221,7 +221,7 @@ p <- ggplot(df_subset, aes(x = Datetime, y = RR_value_ms)) +
   labs(title = "RR_value_ms with KDE-Based Thresholds") +
   theme_minimal()
 p
-ggsave("../images/plot_kde.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_kde.png", plot = p) 
 
 
 # K means method ----
@@ -254,7 +254,7 @@ p <- ggplot(df_subset, aes(x = Datetime, y = RR_value_ms, color = cluster)) +
   scale_color_brewer(palette = "Dark2")  # Color coding clusters
 
 p
-ggsave("../images/plot_kmean.pdf", plot = p) 
+ggsave(bg = "white","../images/plot_kmean.png", plot = p) 
 
 
 #  dbscan ----
@@ -317,7 +317,7 @@ if (!is.null(best_result)) {
     theme_minimal() +
     scale_color_brewer(palette = "Set1")  # Color coding clusters
   
-  ggsave("../images/plot_dbscan.pdf", plot = p) 
+  ggsave(bg = "white","../images/plot_dbscan.png", plot = p) 
   p
 } else {
   print("No suitable clustering found with the specified range of parameters.")
@@ -329,6 +329,7 @@ df_cluster2 <- df_subset2 %>%
 
 library(ggplot2)
 
+
 # Histogram of RR_value_ms for cluster 2
 p <- ggplot(df_cluster2, aes(x = RR_value_ms)) +
   geom_histogram(binwidth = 10,  # Adjust binwidth to suitable scale
@@ -337,7 +338,7 @@ p <- ggplot(df_cluster2, aes(x = RR_value_ms)) +
   theme_minimal()
 
 p
-ggsave("../images/plot_dbscan_hist.pdf", plot = p)
+ggsave(bg = "white","../images/plot_dbscan_hist.png", plot = p)
 
 
 
